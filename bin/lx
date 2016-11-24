@@ -295,7 +295,8 @@ function setupuser {
 	myuser=$(cat /etc/passwd|cut -d ':' -f1|grep -P "^$REPLY\$")
 	userhome=$(cat /etc/passwd|grep -P "^$myuser:"|cut -d ':' -f6)
 	[[ -z "$myuser" ]] && faile "No such user [$myuser]"
-
+	[[ ! -e "$userhome/" ]] && faile "No such $userhome";
+	
 	# there is an issue when setting up on ecryptfs encrypted home directories
 	# https://bugs.launchpad.net/ubuntu/+source/lxc/+bug/1389305
 	if [[ $(mount | grep "$myuser" | grep ecryptfs -c) -gt 0 ]]; then
@@ -329,6 +330,7 @@ EOF
 	}
 	# these need to be set so as to be able to run unprivileged
 	# the rest of the structure in $userhome/.local/share/lxc should be OK
+	mkdir -p "$userhome/.local/share/lxc"
 	chmod o+x $userhome
 	chmod o+x $userhome/.local
 	chmod o+x $userhome/.local/share
