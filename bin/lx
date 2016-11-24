@@ -330,7 +330,7 @@ EOF
 	}
 	# these need to be set so as to be able to run unprivileged
 	# the rest of the structure in $userhome/.local/share/lxc should be OK
-	mkdir -p "$userhome/.local/share/lxc"
+	[[ ! -e "$userhome/.local/share/lxc" ]] && mkdir -p "$userhome/.local/share/lxc" && chown $myuser:$myuser "$userhome/.local/share/lxc"
 	chmod o+x $userhome
 	chmod o+x $userhome/.local
 	chmod o+x $userhome/.local/share
